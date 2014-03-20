@@ -5,7 +5,7 @@
 #include "arch_GOARCH.h"
 #include "../../cmd/ld/textflag.h"
 
-#line 25 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 25 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 typedef struct SemaWaiter SemaWaiter; 
 struct SemaWaiter 
 { 
@@ -16,19 +16,19 @@ int32 nrelease;
 SemaWaiter* prev; 
 SemaWaiter* next; 
 } ; 
-#line 36 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 36 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 typedef struct SemaRoot SemaRoot; 
 struct SemaRoot 
 { 
 Lock; 
 SemaWaiter* head; 
 SemaWaiter* tail; 
-#line 43 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 43 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 uint32 volatile nwait; 
 } ; 
-#line 47 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 47 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 #define SEMTABLESZ 251 
-#line 49 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 49 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 struct semtable 
 { 
 SemaRoot; 
@@ -36,13 +36,13 @@ uint8 pad[CacheLineSize-sizeof ( SemaRoot ) ];
 } ; 
 #pragma dataflag NOPTR 
 static struct semtable semtable[SEMTABLESZ]; 
-#line 57 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 57 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 static SemaRoot* 
 semroot ( uint32 *addr ) 
 { 
 return &semtable[ ( ( uintptr ) addr >> 3 ) % SEMTABLESZ]; 
 } 
-#line 63 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 63 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 static void 
 semqueue ( SemaRoot *root , uint32 volatile *addr , SemaWaiter *s ) 
 { 
@@ -56,7 +56,7 @@ else
 root->head = s; 
 root->tail = s; 
 } 
-#line 77 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 77 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 static void 
 semdequeue ( SemaRoot *root , SemaWaiter *s ) 
 { 
@@ -71,28 +71,28 @@ root->head = s->next;
 s->prev = nil; 
 s->next = nil; 
 } 
-#line 92 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 92 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 static int32 
 cansemacquire ( uint32 *addr ) 
 { 
 uint32 v; 
-#line 97 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 97 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 while ( ( v = runtime·atomicload ( addr ) ) > 0 ) 
 if ( runtime·cas ( addr , v , v-1 ) ) 
 return 1; 
 return 0; 
 } 
-#line 103 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 103 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 void 
 runtime·semacquire ( uint32 volatile *addr , bool profile ) 
 { 
 SemaWaiter s; 
 SemaRoot *root; 
 int64 t0; 
-#line 111 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 111 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 if ( cansemacquire ( addr ) ) 
 return; 
-#line 120 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 120 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 root = semroot ( addr ) ; 
 t0 = 0; 
 s.releasetime = 0; 
@@ -102,15 +102,15 @@ s.releasetime = -1;
 } 
 for ( ;; ) { 
 runtime·lock ( root ) ; 
-#line 130 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 130 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 runtime·xadd ( &root->nwait , 1 ) ; 
-#line 132 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 132 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 if ( cansemacquire ( addr ) ) { 
 runtime·xadd ( &root->nwait , -1 ) ; 
 runtime·unlock ( root ) ; 
 return; 
 } 
-#line 139 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 139 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 semqueue ( root , addr , &s ) ; 
 runtime·park ( runtime·unlock , root , "semacquire" ) ; 
 if ( cansemacquire ( addr ) ) { 
@@ -120,22 +120,22 @@ return;
 } 
 } 
 } 
-#line 149 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 149 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 void 
 runtime·semrelease ( uint32 volatile *addr ) 
 { 
 SemaWaiter *s; 
 SemaRoot *root; 
-#line 155 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 155 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 root = semroot ( addr ) ; 
 runtime·xadd ( addr , 1 ) ; 
-#line 161 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 161 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 if ( runtime·atomicload ( &root->nwait ) == 0 ) 
 return; 
-#line 165 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 165 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 runtime·lock ( root ) ; 
 if ( runtime·atomicload ( &root->nwait ) == 0 ) { 
-#line 169 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 169 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 runtime·unlock ( root ) ; 
 return; 
 } 
@@ -153,12 +153,12 @@ s->releasetime = runtime·cputicks ( ) ;
 runtime·ready ( s->g ) ; 
 } 
 } 
-#line 188 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 188 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 void net·runtime_Semacquire ( uint32 *addr ) 
 { 
 runtime·semacquire ( addr , true ) ; 
 } 
-#line 193 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 193 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 void net·runtime_Semrelease ( uint32 *addr ) 
 { 
 runtime·semrelease ( addr ) ; 
@@ -166,19 +166,19 @@ runtime·semrelease ( addr ) ;
 void
 sync·runtime_Semacquire(uint32* addr)
 {
-#line 198 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 198 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 
 	runtime·semacquire(addr, true);
 }
 void
 sync·runtime_Semrelease(uint32* addr)
 {
-#line 202 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 202 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 
 	runtime·semrelease(addr);
 }
 
-#line 206 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 206 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 typedef struct SyncSema SyncSema; 
 struct SyncSema 
 { 
@@ -189,7 +189,7 @@ SemaWaiter* tail;
 void
 sync·runtime_Syncsemcheck(uintptr size)
 {
-#line 214 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 214 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 
 	if(size != sizeof(SyncSema)) {
 		runtime·printf("bad SyncSema size: sync:%D runtime:%D\n", (int64)size, (int64)sizeof(SyncSema));
@@ -199,7 +199,7 @@ sync·runtime_Syncsemcheck(uintptr size)
 void
 sync·runtime_Syncsemacquire(SyncSema* s)
 {
-#line 222 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 222 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 
 	SemaWaiter w, *wake;
 	int64 t0;
@@ -243,7 +243,7 @@ sync·runtime_Syncsemacquire(SyncSema* s)
 void
 sync·runtime_Syncsemrelease(SyncSema* s, uint32 n)
 {
-#line 264 "/tmp/bindist375750859/go/src/pkg/runtime/sema.goc"
+#line 264 "/tmp/makerelease886106415/go/src/pkg/runtime/sema.goc"
 
 	SemaWaiter w, *wake;
 

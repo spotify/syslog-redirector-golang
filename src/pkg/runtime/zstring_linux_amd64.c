@@ -7,45 +7,45 @@
 #include "race.h"
 #include "../../cmd/ld/textflag.h"
 
-#line 12 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 12 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 String runtime·emptystring; 
-#line 14 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 14 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 #pragma textflag NOSPLIT 
 intgo 
 runtime·findnull ( byte *s ) 
 { 
 intgo l; 
-#line 20 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 20 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 if ( s == nil ) 
 return 0; 
 for ( l=0; s[l]!=0; l++ ) 
 ; 
 return l; 
 } 
-#line 27 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 27 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 intgo 
 runtime·findnullw ( uint16 *s ) 
 { 
 intgo l; 
-#line 32 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 32 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 if ( s == nil ) 
 return 0; 
 for ( l=0; s[l]!=0; l++ ) 
 ; 
 return l; 
 } 
-#line 39 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 39 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 uintptr runtime·maxstring = 256; 
-#line 41 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 41 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 static String 
 gostringsize ( intgo l ) 
 { 
 String s; 
 uintptr ms; 
-#line 47 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 47 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 if ( l == 0 ) 
 return runtime·emptystring; 
-#line 50 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 50 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 s.str = runtime·mallocgc ( l+1 , 0 , FlagNoScan|FlagNoZero ) ; 
 s.len = l; 
 s.str[l] = 0; 
@@ -56,72 +56,72 @@ break;
 } 
 return s; 
 } 
-#line 61 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 61 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 String 
 runtime·gostring ( byte *str ) 
 { 
 intgo l; 
 String s; 
-#line 67 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 67 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 l = runtime·findnull ( str ) ; 
 s = gostringsize ( l ) ; 
 runtime·memmove ( s.str , str , l ) ; 
 return s; 
 } 
-#line 73 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 73 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 String 
 runtime·gostringn ( byte *str , intgo l ) 
 { 
 String s; 
-#line 78 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 78 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 s = gostringsize ( l ) ; 
 runtime·memmove ( s.str , str , l ) ; 
 return s; 
 } 
-#line 83 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 83 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 Slice 
 runtime·gobytes ( byte *p , intgo n ) 
 { 
 Slice sl; 
-#line 88 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 88 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 sl.array = runtime·mallocgc ( n , 0 , FlagNoScan|FlagNoZero ) ; 
 sl.len = n; 
 sl.cap = n; 
 runtime·memmove ( sl.array , p , n ) ; 
 return sl; 
 } 
-#line 95 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 95 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 String 
 runtime·gostringnocopy ( byte *str ) 
 { 
 String s; 
-#line 100 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 100 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 s.str = str; 
 s.len = runtime·findnull ( str ) ; 
 return s; 
 } 
-#line 105 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 105 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 void 
 runtime·cstringToGo ( byte *str , String s ) 
 { 
 s = runtime·gostringnocopy ( str ) ; 
 FLUSH ( &s ) ; 
 } 
-#line 112 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 112 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 String 
 runtime·gostringw ( uint16 *str ) 
 { 
 intgo n1 , n2 , i; 
 byte buf[8]; 
 String s; 
-#line 119 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 119 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 n1 = 0; 
 for ( i=0; str[i]; i++ ) 
 n1 += runtime·runetochar ( buf , str[i] ) ; 
 s = gostringsize ( n1+4 ) ; 
 n2 = 0; 
 for ( i=0; str[i]; i++ ) { 
-#line 126 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 126 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 if ( n2 >= n1 ) 
 break; 
 n2 += runtime·runetochar ( s.str+n2 , str[i] ) ; 
@@ -130,29 +130,29 @@ s.len = n2;
 s.str[s.len] = 0; 
 return s; 
 } 
-#line 135 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 135 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 String 
 runtime·catstring ( String s1 , String s2 ) 
 { 
 String s3; 
-#line 140 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 140 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 if ( s1.len == 0 ) 
 return s2; 
 if ( s2.len == 0 ) 
 return s1; 
-#line 145 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 145 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 s3 = gostringsize ( s1.len + s2.len ) ; 
 runtime·memmove ( s3.str , s1.str , s1.len ) ; 
 runtime·memmove ( s3.str+s1.len , s2.str , s2.len ) ; 
 return s3; 
 } 
-#line 151 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 151 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 static String 
 concatstring ( intgo n , String *s ) 
 { 
 intgo i , l , count; 
 String out; 
-#line 157 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 157 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 l = 0; 
 count = 0; 
 for ( i=0; i<n; i++ ) { 
@@ -168,7 +168,7 @@ if ( count == 0 )
 return runtime·emptystring; 
 if ( count == 1 ) 
 return out; 
-#line 173 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 173 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 out = gostringsize ( l ) ; 
 l = 0; 
 for ( i=0; i<n; i++ ) { 
@@ -177,7 +177,7 @@ l += s[i].len;
 } 
 return out; 
 } 
-#line 185 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 185 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 #pragma textflag NOSPLIT 
 void 
 runtime·concatstring ( intgo n , String s1 , ... ) 
@@ -187,7 +187,7 @@ runtime·concatstring ( intgo n , String s1 , ... )
 void
 runtime·eqstring(String s1, String s2, bool v)
 {
-#line 192 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 192 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 
 	if(s1.len != s2.len) {
 		v = false;
@@ -201,13 +201,13 @@ runtime·eqstring(String s1, String s2, bool v)
 	FLUSH(&v);
 }
 
-#line 204 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 204 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 int32 
 runtime·strcmp ( byte *s1 , byte *s2 ) 
 { 
 uintptr i; 
 byte c1 , c2; 
-#line 210 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 210 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 for ( i=0;; i++ ) { 
 c1 = s1[i]; 
 c2 = s2[i]; 
@@ -219,12 +219,12 @@ if ( c1 == 0 )
 return 0; 
 } 
 } 
-#line 222 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 222 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 byte* 
 runtime·strstr ( byte *s1 , byte *s2 ) 
 { 
 byte *sp1 , *sp2; 
-#line 227 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 227 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 if ( *s2 == 0 ) 
 return s1; 
 for ( ; *s1; s1++ ) { 
@@ -244,7 +244,7 @@ return nil;
 void
 runtime·intstring(int64 v, String s)
 {
-#line 244 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 244 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 
 	s = gostringsize(8);
 	s.len = runtime·runetochar(s.str, v);
@@ -254,7 +254,7 @@ runtime·intstring(int64 v, String s)
 void
 runtime·slicebytetostring(Slice b, String s)
 {
-#line 250 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 250 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 
 	void *pc;
 
@@ -269,7 +269,7 @@ runtime·slicebytetostring(Slice b, String s)
 void
 runtime·stringtoslicebyte(String s, Slice b)
 {
-#line 261 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 261 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 
 	b.array = runtime·mallocgc(s.len, 0, FlagNoScan|FlagNoZero);
 	b.len = s.len;
@@ -280,7 +280,7 @@ runtime·stringtoslicebyte(String s, Slice b)
 void
 runtime·slicerunetostring(Slice b, String s)
 {
-#line 268 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 268 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 
 	intgo siz1, siz2, i;
 	int32 *a;
@@ -312,7 +312,7 @@ runtime·slicerunetostring(Slice b, String s)
 void
 runtime·stringtoslicerune(String s, Slice b)
 {
-#line 296 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 296 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 
 	intgo n;
 	int32 dum, *r;
@@ -338,7 +338,7 @@ runtime·stringtoslicerune(String s, Slice b)
 	FLUSH(&b);
 }
 
-#line 320 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 320 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 enum 
 { 
 Runeself = 0x80 , 
@@ -346,7 +346,7 @@ Runeself = 0x80 ,
 void
 runtime·stringiter(String s, intgo k, intgo retk)
 {
-#line 325 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 325 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 
 	int32 l;
 
@@ -371,7 +371,7 @@ out:
 void
 runtime·stringiter2(String s, intgo k, intgo retk, int32 retv)
 {
-#line 346 "/tmp/bindist375750859/go/src/pkg/runtime/string.goc"
+#line 346 "/tmp/makerelease886106415/go/src/pkg/runtime/string.goc"
 
 	if(k >= s.len) {
 		// retk=0 is end of iteration

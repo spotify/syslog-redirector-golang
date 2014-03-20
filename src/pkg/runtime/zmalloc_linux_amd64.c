@@ -11,15 +11,15 @@
 #include "../../cmd/ld/textflag.h"
 #pragma dataflag NOPTR
 
-#line 21 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 21 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 MHeap runtime·mheap; 
-#line 23 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 23 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 int32 runtime·checking; 
-#line 25 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 25 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 extern MStats mstats; 
-#line 27 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 27 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 extern volatile intgo runtime·MemProfileRate; 
-#line 33 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 33 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void* 
 runtime·mallocgc ( uintptr size , uintptr typ , uint32 flag ) 
 { 
@@ -30,23 +30,23 @@ MCacheList *l;
 uintptr npages; 
 MSpan *s; 
 MLink *v; 
-#line 44 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 44 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( size == 0 ) { 
-#line 48 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 48 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 return &runtime·zerobase; 
 } 
 if ( m->mallocing ) 
 runtime·throw ( "malloc/free - deadlock" ) ; 
-#line 54 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 54 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 m->locks++; 
 m->mallocing = 1; 
-#line 57 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 57 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( DebugTypeAtBlockEnd ) 
 size += sizeof ( uintptr ) ; 
-#line 60 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 60 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 c = m->mcache; 
 if ( size <= MaxSmallSize ) { 
-#line 64 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 64 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( size <= 1024-8 ) 
 sizeclass = runtime·size_to_class8[ ( size+7 ) >>3]; 
 else 
@@ -60,13 +60,13 @@ l->list = v->next;
 l->nlist--; 
 if ( ! ( flag & FlagNoZero ) ) { 
 v->next = nil; 
-#line 78 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 78 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( size > sizeof ( uintptr ) && ( ( uintptr* ) v ) [1] != 0 ) 
 runtime·memclr ( ( byte* ) v , size ) ; 
 } 
 c->local_cachealloc += size; 
 } else { 
-#line 86 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 86 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 npages = size >> PageShift; 
 if ( ( size & PageMask ) != 0 ) 
 npages++; 
@@ -76,40 +76,40 @@ runtime·throw ( "out of memory" ) ;
 s->limit = ( byte* ) ( s->start<<PageShift ) + size; 
 size = npages<<PageShift; 
 v = ( void* ) ( s->start << PageShift ) ; 
-#line 97 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 97 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·markspan ( v , 0 , 0 , true ) ; 
 } 
-#line 100 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 100 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( ! ( flag & FlagNoGC ) ) 
 runtime·markallocated ( v , size , ( flag&FlagNoScan ) != 0 ) ; 
-#line 103 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 103 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( DebugTypeAtBlockEnd ) 
 * ( uintptr* ) ( ( uintptr ) v+size-sizeof ( uintptr ) ) = typ; 
-#line 108 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 108 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( UseSpanType && ! ( flag & FlagNoScan ) && typ != 0 ) { 
 uintptr *buf , i; 
-#line 111 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 111 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 buf = m->settype_buf; 
 i = m->settype_bufsize; 
 buf[i++] = ( uintptr ) v; 
 buf[i++] = typ; 
 m->settype_bufsize = i; 
 } 
-#line 118 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 118 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 m->mallocing = 0; 
 if ( UseSpanType && ! ( flag & FlagNoScan ) && typ != 0 && m->settype_bufsize == nelem ( m->settype_buf ) ) 
 runtime·settype_flush ( m ) ; 
 m->locks--; 
 if ( m->locks == 0 && g->preempt ) 
 g->stackguard0 = StackPreempt; 
-#line 125 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 125 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( ! ( flag & FlagNoProfiling ) && ( rate = runtime·MemProfileRate ) > 0 ) { 
 if ( size >= rate ) 
 goto profile; 
 if ( m->mcache->next_sample > size ) 
 m->mcache->next_sample -= size; 
 else { 
-#line 133 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 133 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( rate > 0x3fffffff ) 
 rate = 0x3fffffff; 
 m->mcache->next_sample = runtime·fastrand1 ( ) % ( 2*rate ) ; 
@@ -118,21 +118,21 @@ runtime·setblockspecial ( v , true ) ;
 runtime·MProf_Malloc ( v , size ) ; 
 } 
 } 
-#line 142 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 142 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( ! ( flag & FlagNoInvokeGC ) && mstats.heap_alloc >= mstats.next_gc ) 
 runtime·gc ( 0 ) ; 
-#line 145 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 145 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( raceenabled ) 
 runtime·racemalloc ( v , size ) ; 
 return v; 
 } 
-#line 150 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 150 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void* 
 runtime·malloc ( uintptr size ) 
 { 
 return runtime·mallocgc ( size , 0 , FlagNoInvokeGC ) ; 
 } 
-#line 157 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 157 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void 
 runtime·free ( void *v ) 
 { 
@@ -141,41 +141,41 @@ MSpan *s;
 MCache *c; 
 uint32 prof; 
 uintptr size; 
-#line 166 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 166 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( v == nil ) 
 return; 
-#line 172 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 172 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( m->mallocing ) 
 runtime·throw ( "malloc/free - deadlock" ) ; 
 m->mallocing = 1; 
-#line 176 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 176 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( !runtime·mlookup ( v , nil , nil , &s ) ) { 
 runtime·printf ( "free %p: not an allocated block\n" , v ) ; 
 runtime·throw ( "free runtime·mlookup" ) ; 
 } 
 prof = runtime·blockspecial ( v ) ; 
-#line 182 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 182 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( raceenabled ) 
 runtime·racefree ( v ) ; 
-#line 186 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 186 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 sizeclass = s->sizeclass; 
 c = m->mcache; 
 if ( sizeclass == 0 ) { 
-#line 190 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 190 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 size = s->npages<<PageShift; 
 * ( uintptr* ) ( s->start<<PageShift ) = ( uintptr ) 0xfeedfeedfeedfeedll; 
-#line 194 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 194 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·markfreed ( v , size ) ; 
 runtime·unmarkspan ( v , 1<<PageShift ) ; 
 runtime·MHeap_Free ( &runtime·mheap , s , 1 ) ; 
 c->local_nlargefree++; 
 c->local_largefree += size; 
 } else { 
-#line 201 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 201 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 size = runtime·class_to_size[sizeclass]; 
 if ( size > sizeof ( uintptr ) ) 
 ( ( uintptr* ) v ) [1] = ( uintptr ) 0xfeedfeedfeedfeedll; 
-#line 207 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 207 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·markfreed ( v , size ) ; 
 c->local_nsmallfree[sizeclass]++; 
 runtime·MCache_Free ( c , v , sizeclass , size ) ; 
@@ -184,22 +184,22 @@ if ( prof )
 runtime·MProf_Free ( v , size ) ; 
 m->mallocing = 0; 
 } 
-#line 216 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 216 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 int32 
 runtime·mlookup ( void *v , byte **base , uintptr *size , MSpan **sp ) 
 { 
 uintptr n , i; 
 byte *p; 
 MSpan *s; 
-#line 223 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 223 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 m->mcache->local_nlookup++; 
 if ( sizeof ( void* ) == 4 && m->mcache->local_nlookup >= ( 1<<30 ) ) { 
-#line 226 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 226 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·lock ( &runtime·mheap ) ; 
 runtime·purgecachedstats ( m->mcache ) ; 
 runtime·unlock ( &runtime·mheap ) ; 
 } 
-#line 231 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 231 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 s = runtime·MHeap_LookupMaybe ( &runtime·mheap , v ) ; 
 if ( sp ) 
 *sp = s; 
@@ -211,17 +211,17 @@ if ( size )
 *size = 0; 
 return 0; 
 } 
-#line 243 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 243 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 p = ( byte* ) ( ( uintptr ) s->start<<PageShift ) ; 
 if ( s->sizeclass == 0 ) { 
-#line 246 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 246 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( base ) 
 *base = p; 
 if ( size ) 
 *size = s->npages<<PageShift; 
 return 1; 
 } 
-#line 253 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 253 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 n = s->elemsize; 
 if ( base ) { 
 i = ( ( byte* ) v - p ) /n; 
@@ -229,30 +229,30 @@ i = ( ( byte* ) v - p ) /n;
 } 
 if ( size ) 
 *size = n; 
-#line 261 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 261 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 return 1; 
 } 
-#line 264 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 264 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 MCache* 
 runtime·allocmcache ( void ) 
 { 
 intgo rate; 
 MCache *c; 
-#line 270 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 270 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·lock ( &runtime·mheap ) ; 
 c = runtime·FixAlloc_Alloc ( &runtime·mheap.cachealloc ) ; 
 runtime·unlock ( &runtime·mheap ) ; 
 runtime·memclr ( ( byte* ) c , sizeof ( *c ) ) ; 
-#line 276 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 276 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 rate = runtime·MemProfileRate; 
 if ( rate > 0x3fffffff ) 
 rate = 0x3fffffff; 
 if ( rate != 0 ) 
 c->next_sample = runtime·fastrand1 ( ) % ( 2*rate ) ; 
-#line 282 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 282 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 return c; 
 } 
-#line 285 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 285 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void 
 runtime·freemcache ( MCache *c ) 
 { 
@@ -262,13 +262,13 @@ runtime·purgecachedstats ( c ) ;
 runtime·FixAlloc_Free ( &runtime·mheap.cachealloc , c ) ; 
 runtime·unlock ( &runtime·mheap ) ; 
 } 
-#line 295 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 295 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void 
 runtime·purgecachedstats ( MCache *c ) 
 { 
 MHeap *h; 
 int32 i; 
-#line 302 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 302 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 h = &runtime·mheap; 
 mstats.heap_alloc += c->local_cachealloc; 
 c->local_cachealloc = 0; 
@@ -283,11 +283,11 @@ h->nsmallfree[i] += c->local_nsmallfree[i];
 c->local_nsmallfree[i] = 0; 
 } 
 } 
-#line 317 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 317 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 uintptr runtime·sizeof_C_MStats = sizeof ( MStats ) ; 
-#line 319 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 319 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 #define MaxArena32 ( 2U<<30 ) 
-#line 321 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 321 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void 
 runtime·mallocinit ( void ) 
 { 
@@ -297,23 +297,23 @@ extern byte end[];
 byte *want; 
 uintptr limit; 
 uint64 i; 
-#line 331 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 331 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 p = nil; 
 arena_size = 0; 
 bitmap_size = 0; 
 spans_size = 0; 
-#line 337 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 337 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 USED ( p ) ; 
 USED ( arena_size ) ; 
 USED ( bitmap_size ) ; 
 USED ( spans_size ) ; 
-#line 342 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 342 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·InitSizes ( ) ; 
-#line 347 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 347 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 limit = 0; 
-#line 352 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 352 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( sizeof ( void* ) == 8 && ( limit == 0 || limit > ( 1<<30 ) ) ) { 
-#line 377 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 377 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 arena_size = MaxMem; 
 bitmap_size = arena_size / ( sizeof ( void* ) *8/4 ) ; 
 spans_size = arena_size / PageSize * sizeof ( runtime·mheap.spans[0] ) ; 
@@ -326,7 +326,7 @@ break;
 } 
 } 
 if ( p == nil ) { 
-#line 406 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 406 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 bitmap_size = MaxArena32 / ( sizeof ( void* ) *8/4 ) ; 
 arena_size = 512<<20; 
 spans_size = MaxArena32 / PageSize * sizeof ( runtime·mheap.spans[0] ) ; 
@@ -336,7 +336,7 @@ arena_size = bitmap_size * 8;
 spans_size = arena_size / PageSize * sizeof ( runtime·mheap.spans[0] ) ; 
 } 
 spans_size = ROUND ( spans_size , PageSize ) ; 
-#line 425 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 425 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 want = ( byte* ) ROUND ( ( uintptr ) end + ( 1<<18 ) , 1<<20 ) ; 
 p = runtime·SysReserve ( want , bitmap_size + spans_size + arena_size ) ; 
 if ( p == nil ) 
@@ -347,29 +347,29 @@ bitmap_size+spans_size+arena_size ) ;
 } 
 if ( ( uintptr ) p & ( ( ( uintptr ) 1<<PageShift ) -1 ) ) 
 runtime·throw ( "runtime: SysReserve returned unaligned address" ) ; 
-#line 436 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 436 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·mheap.spans = ( MSpan** ) p; 
 runtime·mheap.bitmap = p + spans_size; 
 runtime·mheap.arena_start = p + spans_size + bitmap_size; 
 runtime·mheap.arena_used = runtime·mheap.arena_start; 
 runtime·mheap.arena_end = runtime·mheap.arena_start + arena_size; 
-#line 443 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 443 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·MHeap_Init ( &runtime·mheap ) ; 
 m->mcache = runtime·allocmcache ( ) ; 
-#line 447 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 447 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·free ( runtime·malloc ( 1 ) ) ; 
 } 
-#line 450 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 450 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void* 
 runtime·MHeap_SysAlloc ( MHeap *h , uintptr n ) 
 { 
 byte *p; 
-#line 455 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 455 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( n > h->arena_end - h->arena_used ) { 
-#line 458 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 458 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 byte *new_end; 
 uintptr needed; 
-#line 461 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 461 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 needed = ( uintptr ) h->arena_used + n - ( uintptr ) h->arena_end; 
 needed = ROUND ( needed , 256<<20 ) ; 
 new_end = h->arena_end + needed; 
@@ -380,7 +380,7 @@ h->arena_end = new_end;
 } 
 } 
 if ( n <= h->arena_end - h->arena_used ) { 
-#line 472 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 472 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 p = h->arena_used; 
 runtime·SysMap ( p , n , &mstats.heap_sys ) ; 
 h->arena_used += n; 
@@ -390,21 +390,21 @@ if ( raceenabled )
 runtime·racemapshadow ( p , n ) ; 
 return p; 
 } 
-#line 483 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 483 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( sizeof ( void* ) == 8 && ( uintptr ) h->bitmap >= 0xffffffffU ) 
 return nil; 
-#line 489 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 489 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 p = runtime·SysAlloc ( n , &mstats.heap_sys ) ; 
 if ( p == nil ) 
 return nil; 
-#line 493 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 493 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( p < h->arena_start || p+n - h->arena_start >= MaxArena32 ) { 
 runtime·printf ( "runtime: memory allocated by OS (%p) not in usable range [%p,%p)\n" , 
 p , h->arena_start , h->arena_start+MaxArena32 ) ; 
 runtime·SysFree ( p , n , &mstats.heap_sys ) ; 
 return nil; 
 } 
-#line 500 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 500 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( p+n > h->arena_used ) { 
 h->arena_used = p+n; 
 if ( h->arena_used > h->arena_end ) 
@@ -414,28 +414,28 @@ runtime·MHeap_MapSpans ( h ) ;
 if ( raceenabled ) 
 runtime·racemapshadow ( p , n ) ; 
 } 
-#line 510 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 510 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 return p; 
 } 
-#line 513 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 513 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 static struct 
 { 
 Lock; 
 byte* pos; 
 byte* end; 
 } persistent; 
-#line 520 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 520 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 enum 
 { 
 PersistentAllocChunk = 256<<10 , 
 PersistentAllocMaxBlock = 64<<10 , 
 } ; 
-#line 530 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 530 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void* 
 runtime·persistentalloc ( uintptr size , uintptr align , uint64 *stat ) 
 { 
 byte *p; 
-#line 535 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 535 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( align != 0 ) { 
 if ( align& ( align-1 ) ) 
 runtime·throw ( "persistentalloc: align is now a power of 2" ) ; 
@@ -459,15 +459,15 @@ p = persistent.pos;
 persistent.pos += size; 
 runtime·unlock ( &persistent ) ; 
 if ( stat != &mstats.other_sys ) { 
-#line 559 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 559 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·xadd64 ( stat , size ) ; 
 runtime·xadd64 ( &mstats.other_sys , - ( uint64 ) size ) ; 
 } 
 return p; 
 } 
-#line 565 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 565 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 static Lock settype_lock; 
-#line 567 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 567 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void 
 runtime·settype_flush ( M *mp ) 
 { 
@@ -479,10 +479,10 @@ byte *data3;
 void *v; 
 uintptr typ , p; 
 MSpan *s; 
-#line 579 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 579 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 buf = mp->settype_buf; 
 endbuf = buf + mp->settype_bufsize; 
-#line 582 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 582 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 runtime·lock ( &settype_lock ) ; 
 while ( buf < endbuf ) { 
 v = ( void* ) *buf; 
@@ -490,21 +490,21 @@ v = ( void* ) *buf;
 buf++; 
 typ = *buf; 
 buf++; 
-#line 591 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 591 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 p = ( uintptr ) v>>PageShift; 
 if ( sizeof ( void* ) == 8 ) 
 p -= ( uintptr ) runtime·mheap.arena_start >> PageShift; 
 s = runtime·mheap.spans[p]; 
-#line 596 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 596 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 if ( s->sizeclass == 0 ) { 
 s->types.compression = MTypes_Single; 
 s->types.data = typ; 
 continue; 
 } 
-#line 602 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 602 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 size = s->elemsize; 
 ofs = ( ( uintptr ) v - ( s->start<<PageShift ) ) / size; 
-#line 605 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 605 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 switch ( s->types.compression ) { 
 case MTypes_Empty: 
 ntypes = ( s->npages << PageShift ) / size; 
@@ -515,11 +515,11 @@ s->types.data = ( uintptr ) data3;
 ( ( uintptr* ) data3 ) [1] = typ; 
 data3[8*sizeof ( uintptr ) + ofs] = 1; 
 break; 
-#line 616 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 616 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 case MTypes_Words: 
 ( ( uintptr* ) s->types.data ) [ofs] = typ; 
 break; 
-#line 620 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 620 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 case MTypes_Bytes: 
 data3 = ( byte* ) s->types.data; 
 for ( j=1; j<8; j++ ) { 
@@ -539,7 +539,7 @@ nbytes2 = ntypes * sizeof ( uintptr ) ;
 data2 = runtime·mallocgc ( nbytes2 , 0 , FlagNoProfiling|FlagNoScan|FlagNoInvokeGC ) ; 
 s->types.compression = MTypes_Words; 
 s->types.data = ( uintptr ) data2; 
-#line 641 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 641 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 for ( j=0; j<ntypes; j++ ) { 
 t = data3[8*sizeof ( uintptr ) + j]; 
 t = ( ( uintptr* ) data3 ) [t]; 
@@ -551,17 +551,17 @@ break;
 } 
 } 
 runtime·unlock ( &settype_lock ) ; 
-#line 653 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 653 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 mp->settype_bufsize = 0; 
 } 
-#line 656 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 656 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 uintptr 
 runtime·gettype ( void *v ) 
 { 
 MSpan *s; 
 uintptr t , ofs; 
 byte *data; 
-#line 663 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 663 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 s = runtime·MHeap_LookupMaybe ( &runtime·mheap , v ) ; 
 if ( s != nil ) { 
 t = 0; 
@@ -593,13 +593,13 @@ return t;
 } 
 return 0; 
 } 
-#line 697 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 697 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void* 
 runtime·mal ( uintptr n ) 
 { 
 return runtime·mallocgc ( n , 0 , 0 ) ; 
 } 
-#line 703 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 703 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 #pragma textflag NOSPLIT 
 void 
 runtime·new ( Type *typ , uint8 *ret ) 
@@ -607,7 +607,7 @@ runtime·new ( Type *typ , uint8 *ret )
 ret = runtime·mallocgc ( typ->size , ( uintptr ) typ | TypeInfo_SingleObject , typ->kind&KindNoPointers ? FlagNoScan : 0 ) ; 
 FLUSH ( &ret ) ; 
 } 
-#line 711 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 711 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 static void* 
 cnew ( Type *typ , intgo n , int32 objtyp ) 
 { 
@@ -617,13 +617,13 @@ if ( n < 0 || ( typ->size > 0 && n > MaxMem/typ->size ) )
 runtime·panicstring ( "runtime: allocation size out of range" ) ; 
 return runtime·mallocgc ( typ->size*n , ( uintptr ) typ | objtyp , typ->kind&KindNoPointers ? FlagNoScan : 0 ) ; 
 } 
-#line 722 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 722 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void* 
 runtime·cnew ( Type *typ ) 
 { 
 return cnew ( typ , 1 , TypeInfo_SingleObject ) ; 
 } 
-#line 728 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 728 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 void* 
 runtime·cnewarray ( Type *typ , intgo n ) 
 { 
@@ -632,14 +632,14 @@ return cnew ( typ , n , TypeInfo_Array ) ;
 void
 runtime·GC()
 {
-#line 734 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 734 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 
 	runtime·gc(1);
 }
 void
 runtime·SetFinalizer(Eface obj, Eface finalizer)
 {
-#line 738 "/tmp/bindist375750859/go/src/pkg/runtime/malloc.goc"
+#line 738 "/tmp/makerelease886106415/go/src/pkg/runtime/malloc.goc"
 
 	byte *base;
 	uintptr size;

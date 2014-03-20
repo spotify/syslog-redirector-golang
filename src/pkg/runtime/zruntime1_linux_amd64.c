@@ -5,7 +5,7 @@
 void
 runtime·GOMAXPROCS(intgo n, intgo ret)
 {
-#line 8 "/tmp/bindist375750859/go/src/pkg/runtime/runtime1.goc"
+#line 8 "/tmp/makerelease886106415/go/src/pkg/runtime/runtime1.goc"
 
 	ret = runtime·gomaxprocsfunc(n);
 	FLUSH(&ret);
@@ -13,7 +13,7 @@ runtime·GOMAXPROCS(intgo n, intgo ret)
 void
 runtime·NumCPU(intgo ret)
 {
-#line 12 "/tmp/bindist375750859/go/src/pkg/runtime/runtime1.goc"
+#line 12 "/tmp/makerelease886106415/go/src/pkg/runtime/runtime1.goc"
 
 	ret = runtime·ncpu;
 	FLUSH(&ret);

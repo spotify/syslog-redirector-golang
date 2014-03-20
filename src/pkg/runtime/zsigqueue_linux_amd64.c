@@ -7,7 +7,7 @@
 #include "cgocall.h"
 #include "../../cmd/ld/textflag.h"
 
-#line 34 "/tmp/bindist375750859/go/src/pkg/runtime/sigqueue.goc"
+#line 34 "/tmp/makerelease886106415/go/src/pkg/runtime/sigqueue.goc"
 static struct { 
 Note; 
 uint32 mask[ ( NSIG+31 ) /32]; 
@@ -15,17 +15,17 @@ uint32 wanted[ ( NSIG+31 ) /32];
 uint32 state; 
 bool inuse; 
 } sig; 
-#line 42 "/tmp/bindist375750859/go/src/pkg/runtime/sigqueue.goc"
+#line 42 "/tmp/makerelease886106415/go/src/pkg/runtime/sigqueue.goc"
 enum { 
 HASWAITER = 1 , 
 HASSIGNAL = 2 , 
 } ; 
-#line 48 "/tmp/bindist375750859/go/src/pkg/runtime/sigqueue.goc"
+#line 48 "/tmp/makerelease886106415/go/src/pkg/runtime/sigqueue.goc"
 bool 
 runtime·sigsend ( int32 s ) 
 { 
 uint32 bit , mask , old , new; 
-#line 53 "/tmp/bindist375750859/go/src/pkg/runtime/sigqueue.goc"
+#line 53 "/tmp/makerelease886106415/go/src/pkg/runtime/sigqueue.goc"
 if ( !sig.inuse || s < 0 || s >= 32*nelem ( sig.wanted ) || ! ( sig.wanted[s/32]& ( 1U<< ( s&31 ) ) ) ) 
 return false; 
 bit = 1 << ( s&31 ) ; 
@@ -34,7 +34,7 @@ mask = sig.mask[s/32];
 if ( mask & bit ) 
 break; 
 if ( runtime·cas ( &sig.mask[s/32] , mask , mask|bit ) ) { 
-#line 63 "/tmp/bindist375750859/go/src/pkg/runtime/sigqueue.goc"
+#line 63 "/tmp/makerelease886106415/go/src/pkg/runtime/sigqueue.goc"
 for ( ;; ) { 
 old = runtime·atomicload ( &sig.state ) ; 
 if ( old == HASSIGNAL ) 
@@ -57,7 +57,7 @@ return true;
 void
 runtime·signal_recv(uint32 m)
 {
-#line 85 "/tmp/bindist375750859/go/src/pkg/runtime/sigqueue.goc"
+#line 85 "/tmp/makerelease886106415/go/src/pkg/runtime/sigqueue.goc"
 
 	static uint32 recv[nelem(sig.mask)];
 	uint32 i, old, new;
@@ -110,7 +110,7 @@ done:;
 void
 runtime·signal_enable(uint32 s)
 {
-#line 135 "/tmp/bindist375750859/go/src/pkg/runtime/sigqueue.goc"
+#line 135 "/tmp/makerelease886106415/go/src/pkg/runtime/sigqueue.goc"
 
 	if(!sig.inuse) {
 		// The first call to signal_enable is for us
@@ -129,7 +129,7 @@ runtime·signal_enable(uint32 s)
 void
 runtime·signal_disable(uint32 s)
 {
-#line 152 "/tmp/bindist375750859/go/src/pkg/runtime/sigqueue.goc"
+#line 152 "/tmp/makerelease886106415/go/src/pkg/runtime/sigqueue.goc"
 
 	if(s >= nelem(sig.wanted)*32)
 		return;
@@ -137,7 +137,7 @@ runtime·signal_disable(uint32 s)
 	runtime·sigdisable(s);
 }
 
-#line 160 "/tmp/bindist375750859/go/src/pkg/runtime/sigqueue.goc"
+#line 160 "/tmp/makerelease886106415/go/src/pkg/runtime/sigqueue.goc"
 #pragma textflag NOSPLIT 
 void 
 runtime·badsignal ( uintptr sig ) 

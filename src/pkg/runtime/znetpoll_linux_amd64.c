@@ -7,7 +7,7 @@
 #include "malloc.h"
 #define READY ((G*)1)
 
-#line 24 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 24 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 struct PollDesc 
 { 
 PollDesc* link; 
@@ -22,14 +22,14 @@ G* wg;
 Timer wt; 
 int64 wd; 
 } ; 
-#line 39 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 39 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static struct 
 { 
 Lock; 
 PollDesc* first; 
-#line 48 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 48 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 } pollcache; 
-#line 50 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 50 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static bool netpollblock ( PollDesc* , int32 ) ; 
 static G* netpollunblock ( PollDesc* , int32 , bool ) ; 
 static void deadline ( int64 , Eface ) ; 
@@ -37,21 +37,21 @@ static void readDeadline ( int64 , Eface ) ;
 static void writeDeadline ( int64 , Eface ) ; 
 static PollDesc* allocPollDesc ( void ) ; 
 static intgo checkerr ( PollDesc *pd , int32 mode ) ; 
-#line 58 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 58 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static FuncVal deadlineFn = { ( void ( * ) ( void ) ) deadline } ; 
 static FuncVal readDeadlineFn = { ( void ( * ) ( void ) ) readDeadline } ; 
 static FuncVal writeDeadlineFn = { ( void ( * ) ( void ) ) writeDeadline } ; 
 void
 net·runtime_pollServerInit()
 {
-#line 62 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 62 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 
 	runtime·netpollinit();
 }
 void
 net·runtime_pollOpen(uintptr fd, PollDesc* pd, intgo errno)
 {
-#line 66 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 66 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 
 	pd = allocPollDesc();
 	runtime·lock(pd);
@@ -75,7 +75,7 @@ net·runtime_pollOpen(uintptr fd, PollDesc* pd, intgo errno)
 void
 net·runtime_pollClose(PollDesc* pd)
 {
-#line 85 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 85 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 
 	if(!pd->closing)
 		runtime·throw("runtime_pollClose: close w/o unblock");
@@ -92,7 +92,7 @@ net·runtime_pollClose(PollDesc* pd)
 void
 net·runtime_pollReset(PollDesc* pd, intgo mode, intgo err)
 {
-#line 99 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 99 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 
 	runtime·lock(pd);
 	err = checkerr(pd, mode);
@@ -109,7 +109,7 @@ ret:
 void
 net·runtime_pollWait(PollDesc* pd, intgo mode, intgo err)
 {
-#line 112 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 112 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 
 	runtime·lock(pd);
 	err = checkerr(pd, mode);
@@ -129,7 +129,7 @@ net·runtime_pollWait(PollDesc* pd, intgo mode, intgo err)
 void
 net·runtime_pollWaitCanceled(PollDesc* pd, intgo mode)
 {
-#line 128 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 128 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 
 	runtime·lock(pd);
 	// wait for ioready, ignore closing or timeouts.
@@ -140,7 +140,7 @@ net·runtime_pollWaitCanceled(PollDesc* pd, intgo mode)
 void
 net·runtime_pollSetDeadline(PollDesc* pd, int64 d, intgo mode)
 {
-#line 136 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 136 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 
 	G *rg, *wg;
 
@@ -207,7 +207,7 @@ net·runtime_pollSetDeadline(PollDesc* pd, int64 d, intgo mode)
 void
 net·runtime_pollUnblock(PollDesc* pd)
 {
-#line 200 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 200 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 
 	G *rg, *wg;
 
@@ -233,18 +233,18 @@ net·runtime_pollUnblock(PollDesc* pd)
 		runtime·ready(wg);
 }
 
-#line 225 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 225 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 uintptr 
 runtime·netpollfd ( PollDesc *pd ) 
 { 
 return pd->fd; 
 } 
-#line 232 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 232 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 void 
 runtime·netpollready ( G **gpp , PollDesc *pd , int32 mode ) 
 { 
 G *rg , *wg; 
-#line 237 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 237 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 rg = wg = nil; 
 runtime·lock ( pd ) ; 
 if ( mode == 'r' || mode == 'r' +'w' ) 
@@ -261,7 +261,7 @@ wg->schedlink = *gpp;
 *gpp = wg; 
 } 
 } 
-#line 254 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 254 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static intgo 
 checkerr ( PollDesc *pd , int32 mode ) 
 { 
@@ -271,12 +271,12 @@ if ( ( mode == 'r' && pd->rd < 0 ) || ( mode == 'w' && pd->wd < 0 ) )
 return 2; 
 return 0; 
 } 
-#line 265 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 265 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static bool 
 netpollblock ( PollDesc *pd , int32 mode ) 
 { 
 G **gpp; 
-#line 270 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 270 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 gpp = &pd->rg; 
 if ( mode == 'w' ) 
 gpp = &pd->wg; 
@@ -293,45 +293,45 @@ if ( g->param )
 return true; 
 return false; 
 } 
-#line 287 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 287 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static G* 
 netpollunblock ( PollDesc *pd , int32 mode , bool ioready ) 
 { 
 G **gpp , *old; 
-#line 292 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 292 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 gpp = &pd->rg; 
 if ( mode == 'w' ) 
 gpp = &pd->wg; 
 if ( *gpp == READY ) 
 return nil; 
 if ( *gpp == nil ) { 
-#line 300 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 300 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 if ( ioready ) 
 *gpp = READY; 
 return nil; 
 } 
 old = *gpp; 
-#line 306 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 306 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 old->param = ( void* ) ioready; 
 *gpp = nil; 
 return old; 
 } 
-#line 311 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 311 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static void 
 deadlineimpl ( int64 now , Eface arg , bool read , bool write ) 
 { 
 PollDesc *pd; 
 uint32 seq; 
 G *rg , *wg; 
-#line 318 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 318 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 USED ( now ) ; 
 pd = ( PollDesc* ) arg.data; 
-#line 322 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 322 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 seq = ( uintptr ) arg.type; 
 rg = wg = nil; 
 runtime·lock ( pd ) ; 
 if ( seq != pd->seq ) { 
-#line 327 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 327 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 runtime·unlock ( pd ) ; 
 return; 
 } 
@@ -355,37 +355,37 @@ runtime·ready ( rg ) ;
 if ( wg ) 
 runtime·ready ( wg ) ; 
 } 
-#line 351 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 351 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static void 
 deadline ( int64 now , Eface arg ) 
 { 
 deadlineimpl ( now , arg , true , true ) ; 
 } 
-#line 357 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 357 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static void 
 readDeadline ( int64 now , Eface arg ) 
 { 
 deadlineimpl ( now , arg , true , false ) ; 
 } 
-#line 363 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 363 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static void 
 writeDeadline ( int64 now , Eface arg ) 
 { 
 deadlineimpl ( now , arg , false , true ) ; 
 } 
-#line 369 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 369 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 static PollDesc* 
 allocPollDesc ( void ) 
 { 
 PollDesc *pd; 
 uint32 i , n; 
-#line 375 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 375 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 runtime·lock ( &pollcache ) ; 
 if ( pollcache.first == nil ) { 
 n = PageSize/sizeof ( *pd ) ; 
 if ( n == 0 ) 
 n = 1; 
-#line 382 "/tmp/bindist375750859/go/src/pkg/runtime/netpoll.goc"
+#line 382 "/tmp/makerelease886106415/go/src/pkg/runtime/netpoll.goc"
 pd = runtime·persistentalloc ( n*sizeof ( *pd ) , 0 , &mstats.other_sys ) ; 
 for ( i = 0; i < n; i++ ) { 
 pd[i].link = pollcache.first; 

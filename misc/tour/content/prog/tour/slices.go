@@ -1,3 +1,5 @@
+// +build OMIT
+
 package main
 
 import "fmt"
@@ -7,7 +9,6 @@ func main() {
 	fmt.Println("p ==", p)
 
 	for i := 0; i < len(p); i++ {
-		fmt.Printf("p[%d] == %d\n",
-			i, p[i])
+		fmt.Printf("p[%d] == %d\n", i, p[i])
 	}
 }

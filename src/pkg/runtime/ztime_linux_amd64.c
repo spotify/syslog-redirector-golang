@@ -8,25 +8,25 @@
 #include "malloc.h"
 #include "race.h"
 
-#line 16 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 16 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 enum { 
 debug = 0 , 
 } ; 
-#line 20 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 20 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static Timers timers; 
 static void addtimer ( Timer* ) ; 
 static void dumptimers ( int8* ) ; 
 void
 time·Sleep(int64 ns)
 {
-#line 30 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 30 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 
 	runtime·tsleep(ns, "sleep");
 }
 void
 time·startTimer(Timer* t)
 {
-#line 35 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 35 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 
 	if(raceenabled)
 		runtime·racerelease(t);
@@ -35,35 +35,35 @@ time·startTimer(Timer* t)
 void
 time·stopTimer(Timer* t, bool stopped)
 {
-#line 43 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 43 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 
 	stopped = runtime·deltimer(t);
 	FLUSH(&stopped);
 }
 
-#line 49 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 49 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static void timerproc ( void ) ; 
 static void siftup ( int32 ) ; 
 static void siftdown ( int32 ) ; 
-#line 54 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 54 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static void 
 ready ( int64 now , Eface e ) 
 { 
 USED ( now ) ; 
-#line 59 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 59 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 runtime·ready ( e.data ) ; 
 } 
-#line 62 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 62 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static FuncVal readyv = { ( void ( * ) ( void ) ) ready } ; 
-#line 65 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 65 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 void 
 runtime·tsleep ( int64 ns , int8 *reason ) 
 { 
 Timer t; 
-#line 70 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 70 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 if ( ns <= 0 ) 
 return; 
-#line 73 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 73 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 t.when = runtime·nanotime ( ) + ns; 
 t.period = 0; 
 t.fv = &readyv; 
@@ -72,9 +72,9 @@ runtime·lock ( &timers ) ;
 addtimer ( &t ) ; 
 runtime·park ( runtime·unlock , &timers , reason ) ; 
 } 
-#line 82 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 82 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static FuncVal timerprocv = { timerproc } ; 
-#line 84 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 84 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 void 
 runtime·addtimer ( Timer *t ) 
 { 
@@ -82,18 +82,18 @@ runtime·lock ( &timers ) ;
 addtimer ( t ) ; 
 runtime·unlock ( &timers ) ; 
 } 
-#line 94 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 94 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static void 
 addtimer ( Timer *t ) 
 { 
 int32 n; 
 Timer **nt; 
-#line 102 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 102 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 if ( t->when < 0 ) 
 t->when = ( 1LL<<63 ) -1; 
-#line 105 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 105 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 if ( timers.len >= timers.cap ) { 
-#line 107 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 107 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 n = 16; 
 if ( n <= timers.cap ) 
 n = timers.cap*3 / 2; 
@@ -107,7 +107,7 @@ t->i = timers.len++;
 timers.t[t->i] = t; 
 siftup ( t->i ) ; 
 if ( t->i == 0 ) { 
-#line 121 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 121 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 if ( timers.sleeping ) { 
 timers.sleeping = false; 
 runtime·notewakeup ( &timers.waitnote ) ; 
@@ -124,23 +124,23 @@ timers.timerproc->issystem = true;
 if ( debug ) 
 dumptimers ( "addtimer" ) ; 
 } 
-#line 141 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 141 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 bool 
 runtime·deltimer ( Timer *t ) 
 { 
 int32 i; 
-#line 148 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 148 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 i = t->i; 
 USED ( i ) ; 
-#line 151 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 151 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 runtime·lock ( &timers ) ; 
-#line 156 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 156 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 i = t->i; 
 if ( i < 0 || i >= timers.len || timers.t[i] != t ) { 
 runtime·unlock ( &timers ) ; 
 return false; 
 } 
-#line 162 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 162 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 timers.len--; 
 if ( i == timers.len ) { 
 timers.t[i] = nil; 
@@ -156,7 +156,7 @@ dumptimers ( "deltimer" ) ;
 runtime·unlock ( &timers ) ; 
 return true; 
 } 
-#line 182 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 182 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static void 
 timerproc ( void ) 
 { 
@@ -164,7 +164,7 @@ int64 delta , now;
 Timer *t; 
 void ( *f ) ( int64 , Eface ) ; 
 Eface arg; 
-#line 190 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 190 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 for ( ;; ) { 
 runtime·lock ( &timers ) ; 
 timers.sleeping = false; 
@@ -179,11 +179,11 @@ delta = t->when - now;
 if ( delta > 0 ) 
 break; 
 if ( t->period > 0 ) { 
-#line 205 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 205 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 t->when += t->period * ( 1 + -delta/t->period ) ; 
 siftdown ( 0 ) ; 
 } else { 
-#line 209 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 209 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 timers.t[0] = timers.t[--timers.len]; 
 timers.t[0]->i = 0; 
 siftdown ( 0 ) ; 
@@ -198,26 +198,26 @@ f ( now , arg ) ;
 runtime·lock ( &timers ) ; 
 } 
 if ( delta < 0 ) { 
-#line 224 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 224 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 timers.rescheduling = true; 
 runtime·park ( runtime·unlock , &timers , "timer goroutine (idle)" ) ; 
 continue; 
 } 
-#line 229 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 229 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 timers.sleeping = true; 
 runtime·noteclear ( &timers.waitnote ) ; 
 runtime·unlock ( &timers ) ; 
 runtime·notetsleepg ( &timers.waitnote , delta ) ; 
 } 
 } 
-#line 238 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 238 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static void 
 siftup ( int32 i ) 
 { 
 int32 p; 
 int64 when; 
 Timer **t , *tmp; 
-#line 245 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 245 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 t = timers.t; 
 when = t[i]->when; 
 tmp = t[i]; 
@@ -232,14 +232,14 @@ tmp->i = p;
 i = p; 
 } 
 } 
-#line 260 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 260 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static void 
 siftdown ( int32 i ) 
 { 
 int32 c , c3 , len; 
 int64 when , w , w3; 
 Timer **t , *tmp; 
-#line 267 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 267 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 t = timers.t; 
 len = timers.len; 
 when = t[i]->when; 
@@ -275,13 +275,13 @@ tmp->i = c;
 i = c; 
 } 
 } 
-#line 303 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 303 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 static void 
 dumptimers ( int8 *msg ) 
 { 
 Timer *t; 
 int32 i; 
-#line 309 "/tmp/bindist375750859/go/src/pkg/runtime/time.goc"
+#line 309 "/tmp/makerelease886106415/go/src/pkg/runtime/time.goc"
 runtime·printf ( "timers: %s\n" , msg ) ; 
 for ( i = 0; i < timers.len; i++ ) { 
 t = timers.t[i]; 
